@@ -1,0 +1,14 @@
+TODOS
+- alle bisherigen Dateien durchstöbern nach weiteren Todos, die hier einzutragen sind
+- climbRechner: interval 8 soll nicht hartcodiert sein, sondern von gpsSize/totalDistance abhängigsein
+- Download Profil button unten
+- Layout MetaForm eher als Tabelle
+- Refactoring GpsChart (zu gross)
+- Aufgaben auf IMark-Objekte verteilen wo möglich
+- verbesserte Architektur/Logik Koordinaten
+- Log-Einträge entfernen
+- MEthoden: Typisieren rückgabewert
+- sprache alles englisch
+- Scrolling linker Bereich falls zu lange (vertikal)
+- input number: keine pfeile incr decr
+- farbschemas auswählbar (gelb magenta etc.)
