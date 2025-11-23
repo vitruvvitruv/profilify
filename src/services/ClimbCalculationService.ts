@@ -57,7 +57,7 @@ export class ClimbCalculationService {
       const topKm = 0.001 * data[preciseTopIndex].distance;
       const bottomKm = 0.001 * data[preciseBottomIndex].distance;
       if (category != EnumClimbCat.N && (topKm - bottomKm > 0.35)) {
-        detectedClimbs.push(new Climb("Detected climb", "", topKm, bottomKm, data[preciseTopIndex], 
+        detectedClimbs.push(new Climb("Detected climb", topKm, bottomKm, data[preciseTopIndex], 
           data[preciseBottomIndex], category, data[data.length - 1].distance));
       }
     });

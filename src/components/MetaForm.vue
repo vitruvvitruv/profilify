@@ -35,12 +35,10 @@ const markKm = ref<number>(0);
 const startKm = ref<number>(0);
 const endKm = ref<number>(0);
 const markName = ref('');
-const souvenir = ref('');
 
 // Editierbare Felder für ausgewählte Markierung
 const editPosition = ref(0);
 const editLabel = ref('');
-const editSouvenir = ref('');
 const editStart = ref(0);
 const editEnd = ref(0);
 
@@ -65,7 +63,6 @@ watch(() => props.selectedMark, (mark) => {
     }
     if (mark instanceof Climb) {
       editStart.value = mark.startPosition;
-      editSouvenir.value = mark.souvenir;
       editCat.value = "Auto";
     }
   }
@@ -124,13 +121,12 @@ function addMark() {
   //TODO Refactor/Factory?
   if (markType.value == "Climb") {
     const startPosition = startKm.value;
-    const souv = souvenir.value;
     if (isNaN(startKm.value)) {
       alert('Bitte gültige Startposition (km) für Climb eingeben.');
       return;
     }
     const startPoint = props.track.getNearestPoint(startPosition);
-    props.track.marks.push(new Climb(name, souv, position, startPosition, nearestPoint, startPoint, null, props.track.totalKM));
+    props.track.marks.push(new Climb(name, position, startPosition, nearestPoint, startPoint, null, props.track.totalKM));
   }
   else if (markType.value == "Departement") {
     props.track.marks.push(new Departement(name, position, nearestPoint));
@@ -177,7 +173,6 @@ function applyMarkEdit() {
     }
     if (props.selectedMark instanceof Climb) {
       props.selectedMark.startPosition = editStart.value;
-      props.selectedMark.souvenir = editSouvenir.value;
       props.selectedMark.category = editCat.value == 'Auto' ? null : editCat.value;
     }
     emit('updateMeta');
@@ -281,10 +276,6 @@ function deleteSelectedMark() {
       </label>
       <br />
 
-      <label v-if="selectedMark instanceof Climb">
-        Souvenir:
-        <input v-model="editSouvenir" />
-      </label>
       <br v-if="selectedMark instanceof Climb"/>
       <label v-if="selectedMark instanceof Climb">
         Startposition (km):

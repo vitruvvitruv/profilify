@@ -6,7 +6,6 @@ import { TrackDrawService } from '../services/TrackDrawService';
 
 export class Climb implements IMark {
   label: string;
-  souvenir: string;
   position: number;
   startPosition: number;
   startPoint: GpsData;
@@ -17,11 +16,10 @@ export class Climb implements IMark {
   isFinalClimb: boolean;
   shallMoveKmLabel: boolean;
 
-  constructor(name: string, souvenir: string, position: number, startPosition: number, gpsPoint: GpsData, startPoint: GpsData, 
+  constructor(name: string, position: number, startPosition: number, gpsPoint: GpsData, startPoint: GpsData, 
     category: EnumClimbCat | null, totalTrackKM: number) {
     this.type = "Climb";
     this.label = name;
-    this.souvenir = souvenir;
     this.position = position;
     this.startPosition = startPosition;
     this.startPoint = startPoint;
@@ -45,14 +43,9 @@ export class Climb implements IMark {
     }
 
     const textLines = [
-      `${this.label} ${this.gpsPoint.elevation.toFixed(0)}m`
+      `${this.label} ${this.gpsPoint.elevation.toFixed(0)}m`,
+      `(${(this.position - this.startPosition).toFixed(1)}km à ${this.gradient.toFixed(1)}%)`
     ];
-    
-    const hasSouvenir = this.souvenir && this.souvenir.trim() !== "";
-    if (hasSouvenir) {
-      textLines.push(`Souvenir ${this.souvenir}`);
-    }
-    textLines.push(`(${(this.position - this.startPosition).toFixed(1)}km à ${this.gradient.toFixed(1)}%)`);
 
     g.append("text")
       .attr("x", markerX)
@@ -66,14 +59,9 @@ export class Climb implements IMark {
       .append("tspan")
       .attr("x", markerX)
       .attr("dy", (_d, i) => {
-        if (i === 0) {
-          return hasSouvenir ? "-1.2em" : "-0.6em";
-        }
-        return "1.2em";
+        return i === 0 ? "-0.6em" : "1.2em";
       })
-      .style("font-size", (_d, i) =>
-        hasSouvenir && i === textLines.length - 1 ? "14px" : "14px"
-      )
+      .style("font-size", "14px")
       .text(d => d)
       .style("cursor", "pointer")
       .on("click", (event) => {

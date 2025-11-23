@@ -53,7 +53,7 @@ export class Track {
     const nearestPoint = this.getNearestPoint(json.position);
     switch (json.type) {
       case 'Climb':
-        return new Climb(json.name, json.souvenir, json.position, json.startPosition,
+        return new Climb(json.name, json.position, json.startPosition,
           nearestPoint, this.getNearestPoint(json.startPosition), json.category, this.totalKM);
       case 'Departement':
         return new Departement(json.name, json.position, nearestPoint);
@@ -95,7 +95,7 @@ export class Track {
       name: mark.label,
       position: mark.position,
       ...(mark instanceof SteepPart || mark instanceof Sector ? { endPosition: mark.endPosition } : {}),
-      ...(mark instanceof Climb ? { souvenir: mark.souvenir, startPosition: mark.startPosition, category: mark.category } : {})
+      ...(mark instanceof Climb ? { startPosition: mark.startPosition, category: mark.category } : {})
     };
   }
 
