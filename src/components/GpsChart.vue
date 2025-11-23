@@ -63,7 +63,7 @@ const drawChart = () => {
     .range([0, w]);
 
   const y = d3.scaleLinear()
-    .domain([-200, props.track.isTimeTrial ? 1300 : 3400])
+    .domain([-100, props.track.isTimeTrial ? 1400 : 3500])
     .range([h, 0]);
 
   // Gradient
@@ -72,7 +72,7 @@ const drawChart = () => {
     .attr("id", "svgGradient")
     .attr("gradientUnits", "userSpaceOnUse")
     .attr("x1", 0)
-    .attr("y1", y(props.track.isTimeTrial ? 800 : 2200))
+    .attr("y1", y(props.track.isTimeTrial ? 900 : 2300))
     .attr("x2", 0)
     .attr("y2", y(0));
 
