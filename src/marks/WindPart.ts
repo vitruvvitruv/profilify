@@ -31,7 +31,7 @@ export class WindPart implements IMark {
         .style("font-size", "20px")
         .text("⚠️");
 
-    TrackDrawService.createOneLineMarkText(g, markerX, markerY - 55, this.label + " " + this.gpsPoint.elevation.toFixed(0) + "m (" + parseFloat((this.endPosition - this.position).toFixed(1)) * 1000 + "m)", this, onSelectMark);
+    TrackDrawService.createOneLineMarkText(g, markerX, markerY - 55, "Zone exposée " + (this.endPosition - this.position).toFixed(1) + "km", this, onSelectMark);
     TrackDrawService.createDashedLine(g, markerX, markerY, h);
     TrackDrawService.createKmLabel(g, markerX, h, this.position, this.shallMoveKmLabel, this, onSelectMark);
   }
