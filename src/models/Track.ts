@@ -7,6 +7,7 @@ import { Sector } from '../marks/Sector';
 import { Sprint } from '../marks/Sprint';
 import { SteepPart } from '../marks/SteepPart';
 import { Town } from '../marks/Town';
+import { WindPart } from '../marks/WindPart';
 import type { ITrackMetaData } from '../interfaces/ITrackMetaData';
 
 export class Track {
@@ -67,6 +68,8 @@ export class Track {
         return new SteepPart(json.name, json.position, json.endPosition, nearestPoint, this.getNearestPoint(json.endPosition));
       case 'Town':
         return new Town(json.name, json.position, nearestPoint);
+      case 'WindPart':
+        return new WindPart(json.name, json.position, json.endPosition, nearestPoint, this.getNearestPoint(json.endPosition));
       default:
         console.warn('Unbekannter Mark-Typ:', json.type);
         return {
@@ -94,7 +97,7 @@ export class Track {
       type: mark.type,
       name: mark.label,
       position: mark.position,
-      ...(mark instanceof SteepPart || mark instanceof Sector ? { endPosition: mark.endPosition } : {}),
+      ...(mark instanceof SteepPart || mark instanceof Sector || mark instanceof WindPart ? { endPosition: mark.endPosition } : {}),
       ...(mark instanceof Climb ? { startPosition: mark.startPosition, category: mark.category } : {})
     };
   }

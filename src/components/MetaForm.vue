@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch } from 'vue';
 import type { Track } from '../models/Track';
 import { Climb } from '../marks/Climb';
 import { Departement } from '../marks/Departement';
@@ -8,6 +8,7 @@ import { Sector } from '../marks/Sector';
 import { Sprint } from '../marks/Sprint';
 import { SteepPart } from '../marks/SteepPart';
 import { Town } from '../marks/Town';
+import { WindPart } from '../marks/WindPart';
 import type { IMark } from '../interfaces/IMark';
 import { EnumClimbCat } from '../enums/EnumClimbCat';
 import { ClimbCalculationService } from '../services/ClimbCalculationService';
@@ -58,7 +59,7 @@ watch(() => props.selectedMark, (mark) => {
   if (mark) {
     editPosition.value = mark.position;
     editLabel.value = mark.label;
-    if (mark instanceof SteepPart || mark instanceof Sector) {
+    if (mark instanceof SteepPart || mark instanceof Sector || mark instanceof WindPart) {
       editEnd.value = mark.endPosition;
     }
     if (mark instanceof Climb) {
@@ -158,6 +159,15 @@ function addMark() {
   else if (markType.value == "Town") {
     props.track.marks.push(new Town(name, position, nearestPoint));
   }
+  else if (markType.value == "WindPart") {
+    const endPosition = endKm.value;
+    if (isNaN(endKm.value)) {
+      alert('Bitte gültige Endposition (km) für WindPart eingeben.');
+      return;
+    }
+    const endPoint = props.track.getNearestPoint(endPosition);
+    props.track.marks.push(new WindPart(name, position, endPosition, nearestPoint, endPoint));
+  }
   markKm.value = 0;
   markName.value = '';
   startKm.value = 0;
@@ -168,7 +178,7 @@ function applyMarkEdit() {
   if (props.selectedMark) {
     props.selectedMark.position = editPosition.value;
     props.selectedMark.label = editLabel.value;
-    if (props.selectedMark instanceof SteepPart || props.selectedMark instanceof Sector) {
+    if (props.selectedMark instanceof SteepPart || props.selectedMark instanceof Sector || props.selectedMark instanceof WindPart) {
       props.selectedMark.endPosition = editEnd.value;
     }
     if (props.selectedMark instanceof Climb) {
@@ -225,6 +235,7 @@ function deleteSelectedMark() {
         <option value="Sprint">Sprint</option>
         <option value="SteepPart">SteepPart</option>
         <option value="Town">Town</option>
+        <option value="WindPart">WindPart</option>
       </select>
     </label>
     <br />
@@ -238,11 +249,11 @@ function deleteSelectedMark() {
       Startposition (km):
       <input type="number" v-model.number="startKm" />
     </label>
-    <label v-if="markType === 'SteepPart' || markType === 'Sector'">
+    <label v-if="markType === 'SteepPart' || markType === 'Sector' || markType === 'WindPart'">
       Endposition (km):
       <input type="number" v-model.number="endKm" />
     </label>
-    <br v-if="markType === 'Climb' || markType === 'Sector' || markType === 'SteepPart'"/>
+    <br v-if="markType === 'Climb' || markType === 'Sector' || markType === 'SteepPart' || markType === 'WindPart'"/>
     <label>
       Bezeichnung:
       <input v-model="markName" />
@@ -294,11 +305,11 @@ function deleteSelectedMark() {
           </option>
         </select>
       </label>
-      <label v-if="selectedMark instanceof SteepPart || selectedMark instanceof Sector">
+      <label v-if="selectedMark instanceof SteepPart || selectedMark instanceof Sector || selectedMark instanceof WindPart">
         Endposition (km):
         <input type="number" v-model.number="editEnd" />
       </label>
-      <br v-if="selectedMark instanceof Climb || selectedMark instanceof SteepPart || selectedMark instanceof Sector" />
+      <br v-if="selectedMark instanceof Climb || selectedMark instanceof SteepPart || selectedMark instanceof Sector || selectedMark instanceof WindPart" />
       <button @click="applyMarkEdit">✅ Änderungen speichern</button>
       <button @click="deleteSelectedMark">🗑️ Markierung löschen</button>
     </div>

@@ -18,6 +18,7 @@ import type { IMark } from '../interfaces/IMark';
 import { TrackDrawService } from '../services/TrackDrawService';
 import { EnumClimbCat } from '../enums/EnumClimbCat';
 import { Sector } from '../marks/Sector';
+import { WindPart } from '../marks/WindPart';
 import { Climb } from '../marks/Climb';
 import { Departement } from '../marks/Departement';
 
@@ -144,6 +145,17 @@ const drawChart = () => {
       .attr('d', area);
   }});
 
+  props.track.marks.forEach((m) => {if (m instanceof WindPart) {
+    const highlightSegment = props.track.gps.filter(p => 
+      p.distance * 0.001 >= m.position && p.distance * 0.001 <= m.endPosition
+    );
+
+    g.append('path')
+      .datum(highlightSegment)
+      .attr('fill', 'powderblue')
+      .attr('stroke', 'none')
+      .attr('d', area);
+  }});
 
 
   // Start-Marker
