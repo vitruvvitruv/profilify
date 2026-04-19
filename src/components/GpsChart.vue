@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineEmits, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { Canvg } from 'canvg';
 import robotoRegularBase64 from '../fonts/roboto-regular.b64.txt?raw';
 import robotoBoldBase64 from '../fonts/roboto-bold.b64.txt?raw';
@@ -63,7 +63,7 @@ const drawChart = () => {
     .range([0, w]);
 
   const y = d3.scaleLinear()
-    .domain([-100, props.track.isTimeTrial ? 1400 : 3500])
+    .domain([-100, props.track.isTimeTrial ? 1400 : 3900])
     .range([h, 0]);
 
   // Gradient
